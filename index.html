@@ -145,34 +145,30 @@
         }
 
         .hero-title {
-            /* 총괄님께서 요청하신 핵심 폰트 스케일 적용 */
             font-size: 2.7rem;
             line-height: 1.6;
             font-weight: 300;
             letter-spacing: -0.02em;
-            color: #111111; /* 기본 텍스트는 정갈하고 묵직한 먹색 */
+            color: #dbdbdb; /* 요청하신 연한 그레이 색상 반영 */
             text-align: center;
-            word-break: keep-all; /* 한글 단어가 어색하게 잘리는 현상 방지 */
+            word-break: keep-all;
         }
 
         .hero-title span {
-            /* 요청하신 작가님의 아이덴티티 포인트 컬러 */
-            color: #be0066; 
+            color: #be0066; /* 이전의 포인트 컬러 유지 */
             font-weight: 700;
-            display: block; /* 마지막 줄 강조를 위해 블록 처리 (선택 사항) */
-            margin-top: 1.5rem;
+            display: block; 
+            margin-top: 0; /* 요청하신 span 영역 margin-top 제거 완료 */
             letter-spacing: 0.05em;
-            
-            /* '칼날'의 예리함을 극대화하는 미니멀한 텍스트 섀도우 효과 (은은한 긴장감 부여) */
             text-shadow: 0 0 1px rgba(190, 0, 102, 0.2);
         }
 
         .hero-subtitle {
-            font-size: 1rem;
-            letter-spacing: 5px;
-            color: #dddddd;
+            font-size: 1.4rem;
+            letter-spacing: 0.2em;
+            color: #333333; /* 기본 서브카피 톤 유지 */
+            padding: 24px; /* 요청하신 사방 패딩 24px 추가 완료 */
             text-align: center;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
         }
 
         /* 5. 행 기준(Row-based) 자유 그리드 아카이브 뮤지엄 공간 */
