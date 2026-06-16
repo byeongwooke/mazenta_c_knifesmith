@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAZENTA.C | 정득묵 온라인 뮤지엄</title>
+    <style>
+        /* 1. 브랜드 컬러 시스템 및 초기화 (Obsidian Black & Bone White) */
+        :root {
+            --point-color: #8B004B; /* Deep Magenta */
+            --bg-black: #0D0D0D;    /* Obsidian Black */
+            --bg-white: #F8F8F8;    /* Bone White */
+            --text-gray: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-white);
+            color: var(--bg-black);
+            font-family: 'Noto Serif KR', serif;
+            overflow-x: hidden;
+            cursor: none; /* 기본 커서 은폐 */
+        }
+
+        /* 2. 고도화된 십자형 레이저 커서 (Crosshair Razor Cursor) */
+        #razor-cursor-h, #razor-cursor-v {
+            position: fixed;
+            background-color: var(--point-color);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.05s ease-out;
+            will-change: transform;
+        }
+        #razor-cursor-h {
+            width: 40px;
+            height: 1px; /* 1px의 정밀한 수평선 */
+            left: -20px;
+            top: 0;
+        }
+        #razor-cursor-v {
+            width: 1px;  /* 1px의 정밀한 수직선 */
+            height: 40px;
+            left: 0;
+            top: -20px;
+        }
+
+        /* 3. 과감한 여백의 상단 헤더 */
+        header {
+            width: 100%;
+            padding: 40px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            position: absolute;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--bg-black);
+        }
+
+        .menu-trigger {
+            font-size: 1.5rem;
+            color: var(--bg-black);
+            cursor: none;
+        }
+
+        /* 4. 시네마틱 게이트 & 히어로 섹션 */
+        .hero-section {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10%;
+            background-color: var(--bg-white);
+            border-bottom: 1px solid rgba(139, 0, 75, 0.2);
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--bg-black);
+        }
+
+        .hero-title span {
+            color: var(--point-color);
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            color: var(--text-gray);
+            text-align: center;
+        }
+
+        /* 5. 행 기준(Row-based) 자유 그리드 아카이브 뮤지엄 공간 */
+        .archive-section {
+            width: 100%;
+            padding: 120px 60px;
+            background-color: var(--bg-black); /* 체스판 레이아웃을 위한 블랙 반전 */
+            color: var(--bg-white);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+            border-left: 3px solid var(--point-color);
+            padding-left: 20px;
+        }
+
+        /* Flex 기반의 행 중심 고유 비율 레이아웃 */
+        .gallery-row-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px; /* 뮤지엄 퀄리티의 과감한 여백 */
+        }
+
+        /* 이미지가 추가될 때마다 비율을 고집하며 최적 배열되는 격자 */
+        .archive-item {
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            height: 400px; /* 행 높이 기준 고정 */
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+
+        .archive-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 고유 aspect-ratio 공간을 채움 */
+            opacity: 0.8;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 슬라이스 변위 UX: 마우스 오버 시 미세하게 베이듯 확장 및 질감 노출 */
+        .archive-item:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .archive-item:hover img {
+            opacity: 1;
+            filter: contrast(1.1);
+        }
+
+        /* 도슨트 스크립트: 평소엔 숨겨진 상세 메타데이터의 절제된 노출 */
+        .docent-script {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(13, 13, 13, 0.9), transparent);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .archive-item:hover .docent-script {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .docent-meta {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--point-color);
+            margin-bottom: 5px;
+        }
+
+        .docent-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="razor-cursor-h"></div>
+    <div id="razor-cursor-v"></div>
+
+    <header>
+        <div class="logo">MAZENTA.C</div>
+        <div class="menu-trigger">☰</div>
+    </header>
+
+    <section class="hero-section">
+        <h1 class="hero-title">우리 자아가 표상 안에서<br>마침내 <span>자유롭기를.</span></h1>
+        <p class="hero-subtitle">1994 - 2026 : 장인을 넘어선 예술가, 정득묵</p>
+    </section>
+
+    <section class="archive-section">
+        <h2 class="section-title">DIGITAL MUSEUM ARCHIVE</h2>
+        
+        <div class="gallery-row-container">
+            <div class="archive-item" style="flex-basis: 600px;">
+                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#1f1f1f; color:#666;">
+                    [ 이미지 영역 13 - 1920x1080 고유 가로비율 ]
+                </div>
+                <div class="docent-script">
+                    <div class="docent-meta">EST. 2022 / DAMASCUS STEEL</div>
+                    <div class="docent-title">경계에 대한 고찰 연작 I</div>
+                </div>
+            </div>
+
+            <div class="archive-item" style="flex-basis: 300px;">
+                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#252525; color:#666;">
+                    [ 이미지 영역 14 - 1080x1920 고유 세로비율 ]
+                </div>
+                <div class="docent-script">
+                    <div class="docent-meta">EST. 2024 / CHARRING & FOSSIL</div>
+                    <div class="docent-title">침묵의 단면 (사슴 뿔 나이프)</div>
+                </div>
+            </div>
+
+            <div class="archive-item" style="flex-basis: 400px;">
+                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#1a1a1a; color:#8B004B;">
+                    [ 이미지 영역 15 - 600x600 RAW FORGE ]
+                </div>
+                <div class="docent-script">
+                    <div class="docent-meta">RAW BLACKSMITH / 1990°C</div>
+                    <div class="docent-title">담금질 전의 거친 열기</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 십자 레이저 커서 마우스 동기화 및 부드러운 트래킹
+        const cursorH = document.getElementById('razor-cursor-h');
+        const cursorV = document.getElementById('razor-cursor-v');
+
+        window.addEventListener('mousemove', (e) => {
+            // 십자선이 교차하는 중앙점이 마우스 포인터 위치와 정확히 일치하도록 설정
+            cursorH.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            cursorV.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        });
+
+        // 향후 동적 이미지 추가 시 행 정렬을 실시간 보정하기 위한 리사이즈 옵저버 뼈대
+        const container = document.querySelector('.gallery-row-container');
+        const resizeObserver = new ResizeObserver(entries => {
+            // 시스템 내부적으로 동적 빈틈 메우기 밀도 스크립트 연동 규격 대기
+        });
+        resizeObserver.observe(container);
+    </script>
+</body>
+</html>
