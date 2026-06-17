@@ -5,391 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAZENTA.C | 정득묵 온라인 뮤지엄</title>
     <style>
-        /* 1. 브랜드 컬러 시스템 및 초기화 */
+        /* [이전 코드의 컬러 및 초기화 레이어 완벽 유지] */
         :root {
-            --point-color: #be0066; /* 기획 최적화 와인 마젠타 */
-            --bg-black: #0D0D0D;    /* Obsidian Black */
-            --bg-white: #F8F8F8;    /* Bone White */
+            --point-color: #be0066; 
+            --bg-black: #0D0D0D;    
+            --bg-white: #F8F8F8;    
             --text-gray: #666666;
             --text-light: #dbdbdb;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body { background-color: var(--bg-black); font-family: 'Noto Serif KR', serif; overflow-x: hidden; cursor: none; }
 
-        body {
-            background-color: var(--bg-black);
-            color: var(--bg-black);
-            font-family: 'Noto Serif KR', serif;
-            overflow-x: hidden;
-            cursor: none; /* 시스템 기본 커서 은폐 (데스크탑 fine 포인터용) */
-        }
-
-        /* 2. 고도화된 십자형 레이저 커서 (Crosshair Razor Cursor) */
+        /* 십자형 레이저 커서 */
         #razor-cursor-h, #razor-cursor-v {
-            position: fixed;
-            background-color: var(--point-color);
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.05s ease-out;
-            will-change: transform;
+            position: fixed; background-color: var(--point-color); pointer-events: none; z-index: 9999; transition: transform 0.05s ease-out; will-change: transform;
         }
         #razor-cursor-h { width: 40px; height: 1px; left: -20px; top: 0; }
         #razor-cursor-v { width: 1px; height: 40px; left: 0; top: -20px; }
 
-        /* 3. 과감한 여백의 상단 헤더 */
         header {
-            width: 100%;
-            padding: 40px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: transparent;
-            position: absolute;
-            top: 0;
-            z-index: 100;
-            transition: padding 0.4s ease;
+            width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; align-items: center; background: transparent; position: absolute; top: 0; z-index: 100;
         }
+        .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; color: var(--bg-white); mix-blend-mode: difference; }
+        .menu-trigger { font-size: 1.5rem; color: var(--bg-white); mix-blend-mode: difference; cursor: none; }
 
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--bg-white);
-            mix-blend-mode: difference;
-        }
+        /* 시네마틱 16:9 레터박스 히어로 */
+        .hero-section { position: relative; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .cinematic-container { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background-color: #000; overflow: hidden; box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); }
+        .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%) scale(1.02); pointer-events: none; }
+        .video-background iframe { width: 100%; height: 100%; border: none; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(13, 13, 13, 0.5), rgba(13, 13, 13, 0.75)); z-index: 2; }
+        .hero-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 10%; }
+        .hero-title { font-size: 2.7rem; font-weight: 300; line-height: 1.6; text-align: center; margin-bottom: 25px; color: var(--text-light); text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); word-break: keep-all; }
+        .hero-title span { color: var(--point-color); font-weight: 700; letter-spacing: 0.05em; }
+        .hero-subtitle { font-size: 1rem; letter-spacing: 5px; color: #dddddd; text-align: center; padding: 24px; text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7); }
 
-        .menu-trigger {
-            font-size: 1.5rem;
-            color: var(--bg-white);
-            mix-blend-mode: difference;
-            cursor: none;
-        }
-
-        /* 4. 시네마틱 레터박스 16:9 크롭 히어로 섹션 */
-        .hero-section {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            background-color: var(--bg-black);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .cinematic-container {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: #000;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-        }
-
-        .video-background {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            transform: translate(-50%, -50%) scale(1.02);
-            pointer-events: none;
-        }
-
-        .video-background iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(13, 13, 13, 0.5), rgba(13, 13, 13, 0.75));
-            z-index: 2;
-        }
-
-        .hero-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10%;
-        }
-
-        .hero-title {
-            font-size: 2.7rem;
-            font-weight: 300;
-            line-height: 1.6;
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--text-light);
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
-            word-break: keep-all;
-            transition: font-size 0.4s ease;
-        }
-
-        .hero-title span {
-            color: var(--point-color);
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            margin-top: 0;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
-            letter-spacing: 5px;
-            color: #dddddd;
-            text-align: center;
-            padding: 24px;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
-            transition: font-size 0.4s ease;
-        }
-
-        /* 5. 행 기준 자유 그리드 및 스플릿 명세서 공간 */
-        .archive-section {
-            width: 100%;
-            padding: 140px 60px;
-            background-color: var(--bg-white);
-            color: var(--bg-black);
-            transition: padding 0.4s ease;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 60px;
-            letter-spacing: 2px;
-            border-left: 3px solid var(--point-color);
-            padding-left: 20px;
-            color: var(--bg-black);
-        }
-
-        .museum-split-showcase {
-            display: flex;
-            width: 100%;
-            height: 540px;
-            gap: 40px;
-            margin-bottom: 60px;
-            transition: flex-direction 0.5s ease, height 0.5s ease;
-        }
-
-        /* 좌측: 1~5.jpg 자동 페이드 무한 롤링 엔진 슬라이더 */
-        .archive-slider-box {
-            flex: 1.2;
-            position: relative;
-            height: 100%;
-            background-color: #000;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .slider-wrapper {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
+        /* 데스크탑 스플릿 쇼케이스 아키텍처 */
+        .archive-section { width: 100%; padding: 140px 60px; background-color: var(--bg-white); color: var(--bg-black); }
+        .section-title { font-size: 2rem; margin-bottom: 60px; letter-spacing: 2px; border-left: 3px solid var(--point-color); padding-left: 20px; }
+        
+        .museum-split-showcase { display: flex; width: 100%; height: 540px; gap: 40px; margin-bottom: 60px; }
+        
+        .archive-slider-box { flex: 1.2; position: relative; height: 100%; background-color: #000; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+        .slider-wrapper { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+        
         .slide-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; visibility: hidden; transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
         }
+        .slide-img.active { opacity: 1; visibility: visible; z-index: 5; }
 
-        .slide-img.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* 우측: 깔끔한 화이트 배경 + 영수증 감성 모노스페이스 명세 캔버스 */
+        /* 화이트 영수증 도슨트 */
         .archive-description-box {
-            flex: 0.8;
-            height: 100%;
-            background-color: #FFFFFF;
-            color: #222222;
-            padding: 45px 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid #e2e2e2;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
-            font-family: 'Courier New', Courier, monospace;
+            flex: 0.8; height: 100%; background-color: #FFFFFF; color: #222222; padding: 45px 40px;
+            display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e2e2e2;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04); font-family: 'Courier New', Courier, monospace;
         }
-
-        .desc-header {
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 0px;
-            color: #000000;
-            margin-bottom: 25px;
-            text-align: center;
-            border-bottom: 1px dashed #cccccc;
-            padding-bottom: 15px;
-        }
-
-        .spec-table {
-            width: 100%;
-        }
-
-        .spec-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px dashed #f0f0f0;
-            font-size: 0.9rem;
-            letter-spacing: -0.5px;
-        }
-
-        .spec-label {
-            color: #555555;
-            font-weight: 500;
-        }
-
-        .spec-value {
-            color: #000000;
-            font-weight: bold;
-        }
-
-        .spec-narrative-footer {
-            margin-top: 30px;
-            font-size: 0.78rem;
-            line-height: 1.6;
-            color: #bbbbbb;
-            font-family: 'Noto Serif KR', serif;
-            text-align: justify;
-            border-top: 1px dashed #cccccc;
-            padding-top: 15px;
-            word-break: keep-all;
-        }
+        .desc-header { font-size: 1.3rem; font-weight: 700; text-align: center; border-bottom: 1px dashed #cccccc; padding-bottom: 15px; margin-bottom: 25px; color: #000; }
+        .spec-table { width: 100%; }
+        .spec-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; font-size: 0.9rem; }
+        .spec-label { color: #555555; }
+        .spec-value { color: #000000; font-weight: bold; }
+        .spec-narrative-footer { margin-top: 30px; font-size: 0.78rem; line-height: 1.6; color: #bbbbbb; font-family: 'Noto Serif KR', serif; text-align: justify; border-top: 1px dashed #cccccc; padding-top: 15px; word-break: keep-all; }
 
         /* ==========================================================================
-           [반응형 엔지니어링] 모바일 및 태블릿 레이아웃 트랜스폼 미디어 쿼리
+           [반응형 패치 브레이크포인트 코어 고도화]
            ========================================================================== */
-        
-        /* 1. 중형 스크린 (태블릿 및 소형 랩톱 브레이크포인트) */
         @media (max-width: 1024px) {
-            header {
-                padding: 30px 40px;
-            }
-            .archive-section {
-                padding: 100px 40px;
-            }
-            .hero-title {
-                font-size: 2.2rem;
-            }
-            .museum-split-showcase {
-                height: 480px;
-                gap: 25px;
-            }
+            header { padding: 30px 40px; }
+            .archive-section { padding: 100px 40px; }
+            .hero-title { font-size: 2.2rem; }
+            .museum-split-showcase { height: 480px; gap: 25px; }
         }
 
-        /* 2. 스마트폰 스마트 반응형 최적화 (768px 이하 극단적 모바일 환경 대응) */
         @media (max-width: 768px) {
-            body {
-                cursor: default; /* 터치 기반 장치에선 시스템 기본 터치 커서 복원 */
-            }
+            body { cursor: default; }
+            #razor-cursor-h, #razor-cursor-v { display: none !important; }
+            header { padding: 20px 24px; }
+            .logo { font-size: 1rem; }
+
+            .cinematic-container { width: 100%; aspect-ratio: auto; height: 75vh; }
+            .video-background { width: 100%; height: 100%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%) scale(1.45); }
+            .hero-title { font-size: 1.45rem; line-height: 1.7; padding: 0 4%; }
+            .hero-subtitle { font-size: 0.8rem; letter-spacing: 2px; padding: 12px 0; }
+
+            .archive-section { padding: 80px 20px; }
+            .section-title { font-size: 1.5rem; margin-bottom: 40px; }
             
-            #razor-cursor-h, #razor-cursor-v {
-                display: none !important; /* 모바일 터치 점 아래에서 화면을 조각내고 조작을 방해하던 요소 삭제 */
-            }
+            /* 수직 스태킹 컨텍스트 정의 */
+            .museum-split-showcase { flex-direction: column; height: auto; gap: 24px; }
 
-            header {
-                padding: 20px 24px;
-            }
-
-            .logo {
-                font-size: 1rem;
-            }
-
-            /* 비디오 프레임: 세로 가독성 및 웅장한 크롭 비율 증폭 전환 */
-            .cinematic-container {
-                width: 100%;
-                aspect-ratio: auto;
-                height: 75vh; /* 모바일 전 전용 깊이 75vh 고정 */
-            }
-
-            .video-background {
-                width: 100%;
-                height: 100%;
-                min-width: 100%;
-                min-height: 100%;
-                transform: translate(-50%, -50%) scale(1.45); /* 세로 스케일 깨짐 방지용 강제 크롭 배율 확대 */
-            }
-
-            /* 타이포그래피 모바일 브레이크 텍스트 튜닝 */
-            .hero-title {
-                font-size: 1.45rem; /* 터짐 현상 없는 황금비 폰트 다운 */
-                line-height: 1.7;
-                padding: 0 4%;
-            }
-
-            .hero-subtitle {
-                font-size: 0.8rem;
-                letter-spacing: 2px;
-                padding: 12px 0;
-            }
-
-            /* 레이아웃 개혁: 가로 나열 -> 세로 수직 적층(Vertical Stacking) */
-            .archive-section {
-                padding: 80px 20px;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 40px;
-            }
-
-            .museum-split-showcase {
-                flex-direction: column; /* 완벽한 세로 흐름 정렬 */
-                height: auto; /* 고정 높이 타파, 콘텐츠 유연성 극대화 */
-                gap: 24px;
-            }
-
+            /* [버그 해결 코어] : absolute 자식 요소들의 공간 붕괴를 막기 위해 Wrapper와 Box에 명확한 물리 규격 할당 */
             .archive-slider-box {
                 width: 100%;
-                height: 340px; /* 모바일 전용 슬라이드 존 고정 */
+                height: 360px; /* 모바일 전용 360px 영역 확보 */
+                display: block;
+                position: relative;
             }
-
-            .archive-description-box {
+            .slider-wrapper {
+                position: relative; /* absolute 해제하여 일반 흐름 유도 및 높이 동기화 */
                 width: 100%;
-                height: auto;
-                padding: 35px 24px;
+                height: 100%;
+            }
+            .slide-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
-            .desc-header {
-                font-size: 1.15rem;
-                margin-bottom: 20px;
-            }
-
-            .spec-row {
-                font-size: 0.82rem;
-                padding: 9px 0;
-            }
-
-            .spec-narrative-footer {
-                margin-top: 25px;
-                font-size: 0.76rem;
-            }
+            .archive-description-box { width: 100%; height: auto; padding: 35px 24px; }
+            .desc-header { font-size: 1.15rem; margin-bottom: 20px; }
+            .spec-row { font-size: 0.82rem; padding: 9px 0; }
+            .spec-narrative-footer { margin-top: 25px; font-size: 0.76rem; }
         }
     </style>
 </head>
@@ -409,7 +137,6 @@
                 <iframe src="https://www.youtube.com/embed/9ZkDOZpzyhs?autoplay=1&mute=1&loop=1&playlist=9ZkDOZpzyhs&controls=0&start=266&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="hero-overlay"></div>
-            
             <div class="hero-content">
                 <h1 class="hero-title">
                     이상과 현실에서 고민하고 느꼈던 수없이 많은 생각<br>
@@ -439,29 +166,13 @@
                 <div>
                     <h3 class="desc-header">INV. IRON METEORITE KNIFE</h3>
                     <div class="spec-table">
-                        <div class="spec-row">
-                            <span class="spec-label">BLADE</span>
-                            <span class="spec-value">iron meteorite</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">GUARD</span>
-                            <span class="spec-value">stainless steel</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">FERRULE</span>
-                            <span class="spec-value">diamond on silver</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">HANDLE</span>
-                            <span class="spec-value">silver, copper wire / stone</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">CAP</span>
-                            <span class="spec-value">diamond on silver</span>
-                        </div>
+                        <div class="spec-row"><span class="spec-label">BLADE</span><span class="spec-value">iron meteorite</span></div>
+                        <div class="spec-row"><span class="spec-label">GUARD</span><span class="spec-value">stainless steel</span></div>
+                        <div class="spec-row"><span class="spec-label">FERRULE</span><span class="spec-value">diamond on silver</span></div>
+                        <div class="spec-row"><span class="spec-label">HANDLE</span><span class="spec-value">silver, copper wire / stone</span></div>
+                        <div class="spec-row"><span class="spec-label">CAP</span><span class="spec-value">diamond on silver</span></div>
                     </div>
                 </div>
-                
                 <p class="spec-narrative-footer">
                     우주를 떠돌던 운철의 거친 입자를 예리하게 벼려낸 명작. 실버와 카퍼 와이어로 단단히 감아쥔 천연석 핸들 위에 다이아몬드를 점찍어 예술적 권위를 완성했다. 혼돈의 경계를 칼날이라는 절대적 질서로 치환해 낸 정득묵 작가의 심오한 조형미가 투영되어 있다.
                 </p>
@@ -473,7 +184,6 @@
         const cursorH = document.getElementById('razor-cursor-h');
         const cursorV = document.getElementById('razor-cursor-v');
 
-        // [모바일 대응 예외처리] 정밀 마우스 제어 환경(Desktop fine pointer)일 때만 크로스헤어 엔진 동작
         if (window.matchMedia('(pointer: fine)').matches) {
             window.addEventListener('mousemove', (e) => {
                 cursorH.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
@@ -481,6 +191,7 @@
             });
         }
 
+        // 슬라이더 무한 크로스페이드 엔진 (z-index 간섭 패치 완료)
         const slides = document.querySelectorAll('.slide-img');
         let currentSlideIndex = 0;
 
