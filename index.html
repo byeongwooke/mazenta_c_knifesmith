@@ -132,12 +132,12 @@
         }
 
         .hero-title {
-            font-size: 2.7rem; /* 수정 요청 스케일 고정 */
+            font-size: 2.7rem;
             font-weight: 300;
             line-height: 1.6;
             text-align: center;
             margin-bottom: 25px;
-            color: var(--text-light); /* 연한 그레이 색상 전환 */
+            color: var(--text-light);
             text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
             word-break: keep-all;
         }
@@ -146,7 +146,7 @@
             color: var(--point-color);
             font-weight: 700;
             letter-spacing: 0.05em;
-            margin-top: 0; /* 마진 탑 배제 */
+            margin-top: 0;
         }
 
         .hero-subtitle {
@@ -154,7 +154,7 @@
             letter-spacing: 5px;
             color: #dddddd;
             text-align: center;
-            padding: 24px; /* 사방 패딩 가치 부여 */
+            padding: 24px;
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
         }
 
@@ -175,11 +175,10 @@
             color: var(--bg-black);
         }
 
-        /* 스플릿 쇼케이스 구조 (좌측 롤링 슬라이드, 우측 고정 명세 캔버스) */
         .museum-split-showcase {
             display: flex;
             width: 100%;
-            height: 520px;
+            height: 540px;
             gap: 40px;
             margin-bottom: 60px;
         }
@@ -217,27 +216,29 @@
             visibility: visible;
         }
 
-        /* 우측: 도슨트 스크립트 기반 명세 테이블 스페이스 */
+        /* 우측: [개선] 깔끔한 화이트 배경 + 영수증 감성 모노스페이스 명세 캔버스 */
         .archive-description-box {
             flex: 0.8;
             height: 100%;
-            background-color: var(--bg-black);
-            color: var(--bg-white);
-            padding: 50px;
+            background-color: #FFFFFF; /* 완벽한 솔리드 화이트 전환 */
+            color: #222222;
+            padding: 45px 40px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            border-left: 4px solid var(--point-color); /* 예리한 절단면 선 격조 */
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            justify-content: space-between;
+            border: 1px solid #e2e2e2;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            font-family: 'Courier New', Courier, monospace; /* 영수증 타자기 무드 고정 */
         }
 
         .desc-header {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: var(--bg-white);
-            margin-bottom: 35px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0px;
+            color: #000000;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 1px dashed #cccccc; /* 영수증 타공선 느낌의 셰이프 */
             padding-bottom: 15px;
         }
 
@@ -248,22 +249,33 @@
         .spec-row {
             display: flex;
             justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.95rem;
+            padding: 10px 0;
+            border-bottom: 1px dashed #f0f0f0;
+            font-size: 0.9rem;
+            letter-spacing: -0.5px;
         }
 
         .spec-label {
-            font-family: monospace;
-            color: var(--point-color);
-            font-weight: bold;
-            letter-spacing: 1px;
+            color: #555555;
+            font-weight: 500;
         }
 
         .spec-value {
-            font-weight: 300;
-            color: var(--text-light);
-            text-align: right;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        /* [추가] 100자 내외의 저대비 은폐형 도슨트 설명문 */
+        .spec-narrative-footer {
+            margin-top: 30px;
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: #bbbbbb; /* 화이트 배경 위에서 시선을 강탈하지 않는 미세 노출 그레이 */
+            font-family: 'Noto Serif KR', serif; /* 격조 있는 서사를 위한 명조 매칭 */
+            text-align: justify;
+            border-top: 1px dashed #cccccc;
+            padding-top: 15px;
+            word-break: keep-all;
         }
     </style>
 </head>
@@ -310,29 +322,35 @@
             </div>
 
             <div class="archive-description-box">
-                <h3 class="desc-header">[IRON METEORITE KNIFE]</h3>
-                <div class="spec-table">
-                    <div class="spec-row">
-                        <span class="spec-label">* blade</span>
-                        <span class="spec-value">iron meteorite</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">* guard</span>
-                        <span class="spec-value">stainless steel</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">* ferrule</span>
-                        <span class="spec-value">diamond on silver</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">* handle</span>
-                        <span class="spec-value">silver wire, copper wire on stone</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">* cap</span>
-                        <span class="spec-value">diamond on silver</span>
+                <div>
+                    <h3 class="desc-header">INV. IRON METEORITE KNIFE</h3>
+                    <div class="spec-table">
+                        <div class="spec-row">
+                            <span class="spec-label">BLADE</span>
+                            <span class="spec-value">iron meteorite</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">GUARD</span>
+                            <span class="spec-value">stainless steel</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">FERRULE</span>
+                            <span class="spec-value">diamond on silver</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">HANDLE</span>
+                            <span class="spec-value">silver, copper wire / stone</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">CAP</span>
+                            <span class="spec-value">diamond on silver</span>
+                        </div>
                     </div>
                 </div>
+                
+                <p class="spec-narrative-footer">
+                    우주를 떠돌던 운철의 거친 입자를 예리하게 벼려낸 명작. 실버와 카퍼 와이어로 단단히 감아쥔 천연석 핸들 위에 다이아몬드를 점찍어 예술적 권위를 완성했다. 혼돈의 경계를 칼날이라는 절대적 질서로 치환해 낸 정득묵 작가의 심오한 조형미가 투영되어 있다.
+                </p>
             </div>
         </div>
     </section>
@@ -346,7 +364,6 @@
             cursorV.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
         });
 
-        // 좌측 이미지 무한 롤링 엔진 (3초 간격 페이드 크로스오버 처리)
         const slides = document.querySelectorAll('.slide-img');
         let currentSlideIndex = 0;
 
