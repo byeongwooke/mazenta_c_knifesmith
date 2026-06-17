@@ -30,7 +30,7 @@
         .logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; color: var(--bg-white); mix-blend-mode: difference; }
         .menu-trigger { font-size: 1.5rem; color: var(--bg-white); mix-blend-mode: difference; cursor: none; }
 
-        /* 시네마틱 16:9 레터박스 히어로 */
+        /* 시네마 cinematic 16:9 레터박스 히어로 */
         .hero-section { position: relative; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
         .cinematic-container { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background-color: #000; overflow: hidden; box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); }
         .video-background { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%) scale(1.02); pointer-events: none; }
@@ -87,7 +87,9 @@
 
             .cinematic-container { width: 100%; aspect-ratio: auto; height: 75vh; }
             .video-background { width: 100%; height: 100%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%) scale(1.45); }
-            .hero-title { font-size: 1.45rem; line-height: 1.7; padding: 0 4%; }
+            
+            /* 모바일 최적화: 줄바꿈이 자연스럽게 적용되도록 폰트 크기 세밀 조정 */
+            .hero-title { font-size: 1.25rem; line-height: 1.8; padding: 0 4%; }
             .hero-subtitle { font-size: 0.8rem; letter-spacing: 2px; padding: 12px 0; }
 
             .archive-section { padding: 80px 20px; }
@@ -96,7 +98,7 @@
             /* 수직 스태킹 컨텍스트 정의 */
             .museum-split-showcase { flex-direction: column; height: auto; gap: 24px; }
 
-            /* [버그 해결 코어] : absolute 자식 요소들의 공간 붕괴를 막기 위해 Wrapper와 Box에 명확한 물리 규격 할당 */
+            /* absolute 자식 요소들의 공간 붕괴를 막기 위해 Wrapper와 Box에 명확한 물리 규격 할당 */
             .archive-slider-box {
                 width: 100%;
                 height: 360px; /* 모바일 전용 360px 영역 확보 */
@@ -118,6 +120,11 @@
             .desc-header { font-size: 1.15rem; margin-bottom: 20px; }
             .spec-row { font-size: 0.82rem; padding: 9px 0; }
             .spec-narrative-footer { margin-top: 25px; font-size: 0.76rem; }
+        }
+        
+        /* 극단적인 소형 화면(아이폰 SE 등 400px 이하)을 위한 추가 최적화 */
+        @media (max-width: 400px) {
+            .hero-title { font-size: 1.1rem; line-height: 1.8; }
         }
     </style>
 </head>
