@@ -7,10 +7,11 @@
     <style>
         /* 1. 브랜드 컬러 시스템 및 초기화 */
         :root {
-            --point-color: #8B004B; /* Deep Magenta */
+            --point-color: #be0066; /* 기획 최적화 와인 마젠타 */
             --bg-black: #0D0D0D;    /* Obsidian Black */
             --bg-white: #F8F8F8;    /* Bone White */
             --text-gray: #666666;
+            --text-light: #dbdbdb;
         }
 
         * {
@@ -21,7 +22,7 @@
         }
 
         body {
-            background-color: var(--bg-black); /* 전체 배경을 흑요석 블랙으로 통일하여 여백과 싱크 */
+            background-color: var(--bg-black);
             color: var(--bg-black);
             font-family: 'Noto Serif KR', serif;
             overflow-x: hidden;
@@ -37,18 +38,8 @@
             transition: transform 0.05s ease-out;
             will-change: transform;
         }
-        #razor-cursor-h {
-            width: 40px;
-            height: 1px;
-            left: -20px;
-            top: 0;
-        }
-        #razor-cursor-v {
-            width: 1px;
-            height: 40px;
-            left: 0;
-            top: -20px;
-        }
+        #razor-cursor-h { width: 40px; height: 1px; left: -20px; top: 0; }
+        #razor-cursor-v { width: 1px; height: 40px; left: 0; top: -20px; }
 
         /* 3. 과감한 여백의 상단 헤더 */
         header {
@@ -83,32 +74,30 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background-color: var(--bg-black); /* 레터박스가 될 상하 블랙 여백 공간 */
+            background-color: var(--bg-black);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
 
-        /* 16:9 비율을 엄격히 고수하는 시네마틱 컨테이너 고정 크롭 박스 */
         .cinematic-container {
             position: relative;
             width: 100%;
             max-width: 100%;
-            aspect-ratio: 16 / 9; /* 명확한 16:9 극장 화면비 강제 */
+            aspect-ratio: 16 / 9;
             background-color: #000;
             overflow: hidden;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
         }
 
-        /* 크롭 박스 내부 유튜브 프레임 구조 */
         .video-background {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 100%;
             height: 100%;
-            transform: translate(-50%, -50%) scale(1.02); /* 미세 아웃라인 간섭 방지 스케일링 */
+            transform: translate(-50%, -50%) scale(1.02);
             pointer-events: none;
         }
 
@@ -118,7 +107,6 @@
             border: none;
         }
 
-        /* 명품 박물관 톤 다운 그라데이션 필터 overlay */
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -129,7 +117,6 @@
             z-index: 2;
         }
 
-        /* 히어로 전면 텍스트 레이어 */
         .hero-content {
             position: absolute;
             top: 0;
@@ -145,37 +132,37 @@
         }
 
         .hero-title {
-            font-size: 2.7rem;
-            line-height: 1.6;
+            font-size: 2.7rem; /* 수정 요청 스케일 고정 */
             font-weight: 300;
-            letter-spacing: -0.02em;
-            color: #dbdbdb; /* 요청하신 연한 그레이 색상 반영 */
+            line-height: 1.6;
             text-align: center;
+            margin-bottom: 25px;
+            color: var(--text-light); /* 연한 그레이 색상 전환 */
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
             word-break: keep-all;
         }
 
         .hero-title span {
-            color: #be0066; /* 이전의 포인트 컬러 유지 */
+            color: var(--point-color);
             font-weight: 700;
-            display: block; 
-            margin-top: 0; /* 요청하신 span 영역 margin-top 제거 완료 */
             letter-spacing: 0.05em;
-            text-shadow: 0 0 1px rgba(190, 0, 102, 0.2);
+            margin-top: 0; /* 마진 탑 배제 */
         }
 
         .hero-subtitle {
-            font-size: 1.4rem;
-            letter-spacing: 0.2em;
-            color: #333333; /* 기본 서브카피 톤 유지 */
-            padding: 24px; /* 요청하신 사방 패딩 24px 추가 완료 */
+            font-size: 1rem;
+            letter-spacing: 5px;
+            color: #dddddd;
             text-align: center;
+            padding: 24px; /* 사방 패딩 가치 부여 */
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
         }
 
-        /* 5. 행 기준(Row-based) 자유 그리드 아카이브 뮤지엄 공간 */
+        /* 5. 행 기준 자유 그리드 및 스플릿 명세서 공간 */
         .archive-section {
             width: 100%;
             padding: 140px 60px;
-            background-color: var(--bg-white); /* 대조적 미학을 위한 아카이브 영역 반전 */
+            background-color: var(--bg-white);
             color: var(--bg-black);
         }
 
@@ -188,71 +175,95 @@
             color: var(--bg-black);
         }
 
-        .gallery-row-container {
+        /* 스플릿 쇼케이스 구조 (좌측 롤링 슬라이드, 우측 고정 명세 캔버스) */
+        .museum-split-showcase {
             display: flex;
-            flex-wrap: wrap;
+            width: 100%;
+            height: 520px;
             gap: 40px;
+            margin-bottom: 60px;
         }
 
-        .archive-item {
-            flex-grow: 1;
+        /* 좌측: 1~5.jpg 자동 페이드 무한 롤링 엔진 슬라이더 */
+        .archive-slider-box {
+            flex: 1.2;
             position: relative;
+            height: 100%;
+            background-color: #000;
             overflow: hidden;
-            background-color: #e0e0e0;
-            height: 420px;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
         }
 
-        .archive-item img {
+        .slider-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide-img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.9;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .archive-item:hover {
-            transform: scale(1.02) translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-        }
-
-        .archive-item:hover img {
-            opacity: 1;
-            filter: contrast(1.05) brightness(1.02);
-        }
-
-        .docent-script {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 35px;
-            background: linear-gradient(to top, rgba(13, 13, 13, 0.95), transparent);
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            color: var(--bg-white);
+            visibility: hidden;
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
         }
 
-        .archive-item:hover .docent-script {
+        .slide-img.active {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
         }
 
-        .docent-meta {
+        /* 우측: 도슨트 스크립트 기반 명세 테이블 스페이스 */
+        .archive-description-box {
+            flex: 0.8;
+            height: 100%;
+            background-color: var(--bg-black);
+            color: var(--bg-white);
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 4px solid var(--point-color); /* 예리한 절단면 선 격조 */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .desc-header {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--bg-white);
+            margin-bottom: 35px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+        }
+
+        .spec-table {
+            width: 100%;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95rem;
+        }
+
+        .spec-label {
             font-family: monospace;
-            font-size: 0.85rem;
             color: var(--point-color);
-            margin-bottom: 6px;
+            font-weight: bold;
             letter-spacing: 1px;
         }
 
-        .docent-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+        .spec-value {
+            font-weight: 300;
+            color: var(--text-light);
+            text-align: right;
         }
     </style>
 </head>
@@ -269,16 +280,15 @@
     <section class="hero-section">
         <div class="cinematic-container">
             <div class="video-background">
-                <iframe src="https://www.youtube.com/embed/9ZkDOZpzyhs?autoplay=1&mute=1&loop=1&playlist=9ZkDOZpzyhs&controls=0&start=266&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" 
-                        allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/9ZkDOZpzyhs?autoplay=1&mute=1&loop=1&playlist=9ZkDOZpzyhs&controls=0&start=266&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
             <div class="hero-overlay"></div>
             
             <div class="hero-content">
                 <h1 class="hero-title">
-                  이상과 현실에서 고민하고 느꼈던 수없이 많은 생각<br>
-                  무엇도 아니지만 무엇도 될 수 있는<br>
-                  <span>나는 경계다. 나는 칼이다.</span>
+                    이상과 현실에서 고민하고 느꼈던 수없이 많은 생각<br>
+                    무엇도 아니지만 무엇도 될 수 있는<br>
+                    <span>나는 경계다. 나는 칼이다.</span>
                 </h1>
                 <p class="hero-subtitle">1994 - 2026 : 장인을 넘어선 예술가, 정득묵</p>
             </div>
@@ -287,30 +297,47 @@
 
     <section class="archive-section">
         <h2 class="section-title">DIGITAL MUSEUM ARCHIVE</h2>
-        <div class="gallery-row-container">
-            <div class="archive-item" style="flex-basis: 600px;">
-                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#2c2c2c; color:#999; font-size: 0.9rem;">
-                    [ ARCHIVE IMAGE 01 - DAMASCUS SERIE 1920x1080 ]
-                </div>
-                <div class="docent-script">
-                    <div class="docent-meta">EST. 2022 / DAMASCUS STEEL</div>
-                    <div class="docent-title">경계에 대한 고찰 연작 I</div>
+        
+        <div class="museum-split-showcase">
+            <div class="archive-slider-box">
+                <div class="slider-wrapper">
+                    <img src="jpg/1.jpg" alt="Iron Meteorite Knife 1" class="slide-img active">
+                    <img src="jpg/2.jpg" alt="Iron Meteorite Knife 2" class="slide-img">
+                    <img src="jpg/3.jpg" alt="Iron Meteorite Knife 3" class="slide-img">
+                    <img src="jpg/4.jpg" alt="Iron Meteorite Knife 4" class="slide-img">
+                    <img src="jpg/5.jpg" alt="Iron Meteorite Knife 5" class="slide-img">
                 </div>
             </div>
-            <div class="archive-item" style="flex-basis: 300px;">
-                <div style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background:#333333; color:#999; font-size: 0.9rem;">
-                    [ ARCHIVE IMAGE 02 - CHARRING VERTICAL 1080x1920 ]
-                </div>
-                <div class="docent-script">
-                    <div class="docent-meta">EST. 2024 / CHARRING & FOSSIL</div>
-                    <div class="docent-title">침묵의 단면 (사슴 뿔 나이프)</div>
+
+            <div class="archive-description-box">
+                <h3 class="desc-header">[IRON METEORITE KNIFE]</h3>
+                <div class="spec-table">
+                    <div class="spec-row">
+                        <span class="spec-label">* blade</span>
+                        <span class="spec-value">iron meteorite</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">* guard</span>
+                        <span class="spec-value">stainless steel</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">* ferrule</span>
+                        <span class="spec-value">diamond on silver</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">* handle</span>
+                        <span class="spec-value">silver wire, copper wire on stone</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">* cap</span>
+                        <span class="spec-value">diamond on silver</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <script>
-        // 십자 레이저 커서 마우스 동기화 및 트래킹
         const cursorH = document.getElementById('razor-cursor-h');
         const cursorV = document.getElementById('razor-cursor-v');
 
@@ -318,6 +345,20 @@
             cursorH.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
             cursorV.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
         });
+
+        // 좌측 이미지 무한 롤링 엔진 (3초 간격 페이드 크로스오버 처리)
+        const slides = document.querySelectorAll('.slide-img');
+        let currentSlideIndex = 0;
+
+        function nextSlide() {
+            slides[currentSlideIndex].classList.remove('active');
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            slides[currentSlideIndex].classList.add('active');
+        }
+
+        if(slides.length > 0) {
+            setInterval(nextSlide, 3000);
+        }
     </script>
 </body>
 </html>
