@@ -46,6 +46,11 @@
         .section-title { font-size: 2rem; margin-bottom: 60px; letter-spacing: 2px; border-left: 3px solid var(--point-color); padding-left: 20px; }
         
         .museum-split-showcase { display: flex; width: 100%; height: 540px; gap: 40px; margin-bottom: 60px; }
+
+        /* 데스크탑 쇼케이스 좌우 반전 (두 번째 영역) */
+        .showcase-reverse {
+            flex-direction: row-reverse;
+        }
         
         .archive-slider-box { flex: 1.2; position: relative; height: 100%; background-color: #000; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
         .slider-wrapper { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
@@ -95,8 +100,9 @@
             .archive-section { padding: 80px 20px; }
             .section-title { font-size: 1.5rem; margin-bottom: 40px; }
             
-            /* 수직 스태킹 컨텍스트 정의 */
-            .museum-split-showcase { flex-direction: column; height: auto; gap: 24px; }
+            /* 수직 스태킹 컨텍스트 정의 (반전 클래스 포함하여 이미지->텍스트 순서 보장) */
+            .museum-split-showcase,
+            .museum-split-showcase.showcase-reverse { flex-direction: column; height: auto; gap: 24px; }
 
             /* absolute 자식 요소들의 공간 붕괴를 막기 위해 Wrapper와 Box에 명확한 물리 규격 할당 */
             .archive-slider-box {
@@ -186,7 +192,7 @@
             </div>
         </div>
 
-        <div class="museum-split-showcase">
+        <div class="museum-split-showcase showcase-reverse">
             <div class="archive-slider-box">
                 <div class="slider-wrapper">
                     <img src="jpg/11.jpeg" alt="Camping Knife 11" class="slide-img-2 active">
