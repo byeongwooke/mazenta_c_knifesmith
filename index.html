@@ -2,13 +2,28 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MAZENTA.C | GATE</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { width: 100vw; height: 100vh; overflow: hidden; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        body { 
+            width: 100vw; 
+            /* 모바일 사파리 하단바 잘림 방지 최적화 */
+            height: 100vh;
+            height: 100svh; 
+            overflow: hidden; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            background-color: #F5F5F3; /* 통일된 화사한 화이트 배경 */
+            color: #1A1A1A; /* 정갈한 블랙 텍스트 */
+            -webkit-tap-highlight-color: transparent;
+        }
         
-        .split-gate { display: flex; width: 100%; height: 100%; }
+        .split-gate { 
+            display: flex; 
+            flex-direction: column; /* ARTWORK 위, PRODUCT 아래 수직 분할 */
+            width: 100%; 
+            height: 100%; 
+        }
         
         .gate-half {
             flex: 1;
@@ -16,34 +31,47 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            font-size: 3rem;
+            font-size: 4rem; /* 모바일에서도 명확한 타이포그래피 */
             font-weight: 300;
-            letter-spacing: 0.2em;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.15em;
+            color: #1A1A1A;
+            transition: color 0.4s ease, transform 0.4s ease;
             position: relative;
         }
 
-        /* 매트 다크 그레이 & 헌터 그린의 강렬한 대비 */
-        .artwork-gate {
-            background-color: #1A1A1A;
-            color: #E0E0E0;
-            border-right: 1px solid #2C2C2C;
-        }
-        
-        .product-gate {
-            background-color: #E0E0E0;
-            color: #1A1A1A;
+        /* 위아래를 구분하는 미니멀한 경계선 */
+        .gate-half:first-child::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background-color: rgba(26, 26, 26, 0.1);
         }
 
-        /* Hover Interaction: 깔끔한 직선적 기하학 라인 강조 */
-        .artwork-gate:hover { background-color: #111111; color: #355E3B; font-weight: 400; }
-        .product-gate:hover { background-color: #FFFFFF; color: #355E3B; font-weight: 400; }
+        /* 호버 및 모바일 터치 시 헌터 그린 톤 전환 */
+        .gate-half:hover, .gate-half:active { 
+            color: #355E3B; 
+        }
+
+        /* 모바일 최적화 스케일링 */
+        @media (max-width: 768px) {
+            .gate-half {
+                font-size: 2.8rem;
+                letter-spacing: 0.2em;
+            }
+            .gate-half:first-child::after {
+                left: 5%;
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="split-gate">
-        <a href="artwork.html" class="gate-half artwork-gate">ARTWORK</a>
-        <a href="product.html" class="gate-half product-gate">PRODUCT</a>
+        <a href="artwork.html" class="gate-half">ARTWORK</a>
+        <a href="product.html" class="gate-half">PRODUCT</a>
     </div>
 </body>
 </html>
